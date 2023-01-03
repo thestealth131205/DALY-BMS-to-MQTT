@@ -444,15 +444,16 @@ void loop()
         if (bms.update()) // ask the bms for new data
         {
           getJsonData();
-          crcErrCount = 0;
+          crcErrCount =0;
           updatedData = true;
         }
         else
         {
           crcErrCount++;
-          if (crcErrCount >= 3)
+          if (crcErrCount >= 6)
           {
-            clearJsonData(); // by no connection, clear all data
+          getJsonData();
+           // clearJsonData(); // by no connection, clear all data
             updatedData = false;
           }
         }
@@ -478,9 +479,11 @@ void loop()
           else
           {
             crcErrCount++;
-            if (crcErrCount >= 3)
+            if (crcErrCount >= 6)
             {
-              clearJsonData(); // by no connection, clear all data
+              getJsonData(); // prepare data for json string sending
+            sendtoMQTT(); 
+              //clearJsonData(); // by no connection, clear all data
               updatedData = false;
             }
           }
